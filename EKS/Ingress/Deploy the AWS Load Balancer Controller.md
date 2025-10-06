@@ -57,9 +57,9 @@ aws iam create-policy \
     --policy-document file://iam_policy.json
 ```
 
-########################### Create a IAM role and ServiceAccount ########################
+Create a IAM role and ServiceAccount
 Note: Please replace the account ID in line 34 with your own aws account id
-
+```bash
 eksctl create iamserviceaccount \
   --cluster XXXXXXeks-clusterXXXXXXXXX \
   --namespace kube-system \
@@ -67,8 +67,8 @@ eksctl create iamserviceaccount \
   --attach-policy-arn arn:aws:iam::XXXXXXX573567580560XXXXXXXXX:policy/AWSLoadBalancerControllerIAMPolicy \
   --override-existing-serviceaccounts \
   --approve
-
-Verify by cloudformation >> stack and also check in the role
+```
+<h6>Verify by cloudformation >> stack and also check in the role</h6>h6>
 
 ########################### Update EKS KubeConfig ###########################
 
