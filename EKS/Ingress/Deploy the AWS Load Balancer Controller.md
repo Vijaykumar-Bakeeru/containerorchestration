@@ -1,1 +1,87 @@
+Install the following three tools/software for executing the below commands for deploying LoadBalancer controller
 
+
+1) ######################## Install the Helm CLI ###############################
+```bash
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
+```bash
+helm version --short
+```
+
+2) ######################## Install the Kubectl CLI ###############################
+
+curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+
+3) ######################## Install the eksctl CLI ###############################
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+
+
+######################## Create IAM OIDC (Open Identity Connector provider ############################
+
+eksctl utils associate-iam-oidc-provider \
+    --region AWS_REGION \
+    --cluster XXXXXXXXXClutser_nameXXXXXX \
+    --approve
+
+verify : go and check role >> identity provider should match with cluster >> overview
+
+########################## Create a policy called AWSLoadBalancerControllerIAMPolicy #######################
+
+
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.12.0/docs/install/iam_policy.json
+
+# iam_policy.json will created
+
+#curl -o iam_policy.json https://raw.githubusercontent.com/naveen-uppala/ContainerOrchestration/main/EKS/Ingress/iam_policy.json
+
+
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+########################### Create a IAM role and ServiceAccount ########################
+Note: Please replace the account ID in line 34 with your own aws account id
+
+eksctl create iamserviceaccount \
+  --cluster XXXXXXeks-clusterXXXXXXXXX \
+  --namespace kube-system \
+  --name aws-load-balancer-controller \
+  --attach-policy-arn arn:aws:iam::XXXXXXX573567580560XXXXXXXXX:policy/AWSLoadBalancerControllerIAMPolicy \
+  --override-existing-serviceaccounts \
+  --approve
+
+Verify by cloudformation >> stack and also check in the role
+
+########################### Update EKS KubeConfig ###########################
+
+aws eks update-kubeconfig --name cluster-name  --region region-code
+
+########################### Install the TargetGroupBinding CRDs (Custome resource definition) ###########################
+
+1) kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
+
+2) kubectl get crd
+
+############################# Deploy the Helm chart ###############################
+
+1) helm repo add eks https://aws.github.io/eks-charts
+
+2) helm upgrade -i aws-load-balancer-controller \
+    eks/aws-load-balancer-controller \
+    -n kube-system \
+    --set region=XXXXXus-east-1XXXXXX \
+    --set vpcId=XXXXXvpc-079401ef4e8620ed6XXXXXXXX \
+    --set clusterName=XXXXXXXXXXeks-clusterXXXXXXXXXX \
+    --set serviceAccount.create=false \
+    --set serviceAccount.name=aws-load-balancer-controller 
+
+
+3) kubectl -n kube-system rollout status deployment aws-load-balancer-controller
