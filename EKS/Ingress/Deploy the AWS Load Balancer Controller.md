@@ -1,7 +1,7 @@
 Install the following three tools/software for executing the below commands for deploying LoadBalancer controller
 
 
-1) ######################## Install the Helm CLI ###############################
+Install the Helm CLI
 ```bash
 curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 ```
@@ -9,12 +9,19 @@ curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 
 helm version --short
 ```
 
-2) ######################## Install the Kubectl CLI ###############################
-
+Install the Kubectl CLI
+```bash
 curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+```
+```bash
 chmod +x ./kubectl
+```
+```bash
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+```
+```bash
 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+```
 
 3) ######################## Install the eksctl CLI ###############################
 
