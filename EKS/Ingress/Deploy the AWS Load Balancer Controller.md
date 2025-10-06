@@ -23,36 +23,39 @@ mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/
 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 ```
 
-3) ######################## Install the eksctl CLI ###############################
-
+Install the eksctl CLI
+```bash
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+```
+```bash
 sudo mv /tmp/eksctl /usr/local/bin
+```
+```bash
 eksctl version
-
-
-
-######################## Create IAM OIDC (Open Identity Connector provider ############################
-
+```
+Create IAM OIDC (Open Identity Connector provider
+```bash
 eksctl utils associate-iam-oidc-provider \
     --region AWS_REGION \
     --cluster XXXXXXXXXClutser_nameXXXXXX \
     --approve
-
+```
 verify : go and check role >> identity provider should match with cluster >> overview
 
-########################## Create a policy called AWSLoadBalancerControllerIAMPolicy #######################
+ Create a policy called AWSLoadBalancerControllerIAMPolicy
 
-
+```bash
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.12.0/docs/install/iam_policy.json
-
+```
 # iam_policy.json will created
-
+```bash
 #curl -o iam_policy.json https://raw.githubusercontent.com/naveen-uppala/ContainerOrchestration/main/EKS/Ingress/iam_policy.json
-
-
+```
+```bash
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
+```
 
 ########################### Create a IAM role and ServiceAccount ########################
 Note: Please replace the account ID in line 34 with your own aws account id
