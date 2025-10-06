@@ -41,7 +41,7 @@ eksctl utils associate-iam-oidc-provider \
     --approve
 ```
  <h6>verify : go and check role >> identity provider should match with cluster >> overview</h6>
-<h6> # iam_policy.json will created</h6>
+<h6> type ls >> iam_policy.json will created</h6>
 
  Create a policy called AWSLoadBalancerControllerIAMPolicy
 
