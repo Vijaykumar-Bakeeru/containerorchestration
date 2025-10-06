@@ -41,13 +41,14 @@ eksctl utils associate-iam-oidc-provider \
     --approve
 ```
  <h6>verify : go and check role >> identity provider should match with cluster >> overview</h6>
+ # iam_policy.json will created
 
  Create a policy called AWSLoadBalancerControllerIAMPolicy
 
 ```bash
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.12.0/docs/install/iam_policy.json
 ```
-# iam_policy.json will created
+
 ```bash
 #curl -o iam_policy.json https://raw.githubusercontent.com/naveen-uppala/ContainerOrchestration/main/EKS/Ingress/iam_policy.json
 ```
