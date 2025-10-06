@@ -21,17 +21,21 @@ eksctl version
 
 
 
-######################## Create IAM OIDC provider ############################
+######################## Create IAM OIDC (Open Identity Connector provider ############################
 
 eksctl utils associate-iam-oidc-provider \
     --region AWS_REGION \
-    --cluster eks-cluster \
+    --cluster XXXXXXXXXClutser_nameXXXXXX \
     --approve
+
+verify : go and check role >> identity provider should match with cluster >> overview
 
 ########################## Create a policy called AWSLoadBalancerControllerIAMPolicy #######################
 
 
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.12.0/docs/install/iam_policy.json
+
+# iam_policy.json will created
 
 #curl -o iam_policy.json https://raw.githubusercontent.com/naveen-uppala/ContainerOrchestration/main/EKS/Ingress/iam_policy.json
 
@@ -44,18 +48,20 @@ aws iam create-policy \
 Note: Please replace the account ID in line 34 with your own aws account id
 
 eksctl create iamserviceaccount \
-  --cluster eks-cluster \
+  --cluster XXXXXXeks-clusterXXXXXXXXX \
   --namespace kube-system \
   --name aws-load-balancer-controller \
-  --attach-policy-arn arn:aws:iam::573567580560:policy/AWSLoadBalancerControllerIAMPolicy \
+  --attach-policy-arn arn:aws:iam::XXXXXXX573567580560XXXXXXXXX:policy/AWSLoadBalancerControllerIAMPolicy \
   --override-existing-serviceaccounts \
   --approve
+
+Verify by cloudformation >> stack and also check in the role
 
 ########################### Update EKS KubeConfig ###########################
 
 aws eks update-kubeconfig --name cluster-name  --region region-code
 
-########################### Install the TargetGroupBinding CRDs ###########################
+########################### Install the TargetGroupBinding CRDs (Custome resource definition) ###########################
 
 1) kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
 
@@ -68,9 +74,9 @@ aws eks update-kubeconfig --name cluster-name  --region region-code
 2) helm upgrade -i aws-load-balancer-controller \
     eks/aws-load-balancer-controller \
     -n kube-system \
-    --set region=us-east-1 \
-    --set vpcId=vpc-079401ef4e8620ed6 \
-    --set clusterName=eks-cluster \
+    --set region=XXXXXus-east-1XXXXXX \
+    --set vpcId=XXXXXvpc-079401ef4e8620ed6XXXXXXXX \
+    --set clusterName=XXXXXXXXXXeks-clusterXXXXXXXXXX \
     --set serviceAccount.create=false \
     --set serviceAccount.name=aws-load-balancer-controller 
 
