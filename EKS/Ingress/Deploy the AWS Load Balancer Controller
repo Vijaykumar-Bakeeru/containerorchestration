@@ -2,8 +2,9 @@ Install the following three tools/software for executing the below commands for 
 
 
 1) ######################## Install the Helm CLI ###############################
-
+```
 curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
 helm version --short
 
 2) ######################## Install the Kubectl CLI ###############################
