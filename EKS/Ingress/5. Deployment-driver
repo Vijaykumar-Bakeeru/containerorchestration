@@ -21,7 +21,7 @@ spec:
         app: packersmovers
     spec:
       containers:
-      - name: customer
+      - name: driver
         image: XXXXXXXXXXXXXXXXXXXXXXXX841162679093.dkr.ecr.us-east-1.amazonaws.com/customer:6
         imagePullPolicy: Always
         ports:
