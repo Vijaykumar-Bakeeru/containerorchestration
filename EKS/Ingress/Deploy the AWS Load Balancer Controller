@@ -45,6 +45,7 @@ aws iam create-policy \
 
 ########################### Create a IAM role and ServiceAccount ########################
 Note: Please replace the account ID in line 34 with your own aws account id
+# aws configure set region us-east-2
 
 eksctl create iamserviceaccount \
   --cluster XXXXXXeks-clusterXXXXXXXXX \
