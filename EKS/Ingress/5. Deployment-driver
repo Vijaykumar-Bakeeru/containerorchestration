@@ -14,11 +14,11 @@ spec:
   replicas: 4
   selector:
     matchLabels:
-      app: packersmovers
+      app: driver-label # should match with the service-driver not with customer
   template:
     metadata:
       labels:
-        app: packersmovers
+        app: driver-label
     spec:
       containers:
       - name: driver
