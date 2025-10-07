@@ -8,4 +8,4 @@ spec:
   ports:
   - port: 8080
   selector:
-    app: packersmovers
+    app: driver-label
