@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: customer
-        image: 841162679093.dkr.ecr.us-east-1.amazonaws.com/customer:6
+        image: XXXXXXXXXXXXXXXXXXXXXXXX841162679093.dkr.ecr.us-east-1.amazonaws.com/customer:6
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
