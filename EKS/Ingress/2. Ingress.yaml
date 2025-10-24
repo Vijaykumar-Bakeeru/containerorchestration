@@ -21,14 +21,14 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - backend:        # customer
           service:
             name: customer-service
             port:
               number: 8080
         path: /customer*
         pathType: ImplementationSpecific
-      - backend:
+      - backend:     # driver
           service:
             name: driver-service
             port:
